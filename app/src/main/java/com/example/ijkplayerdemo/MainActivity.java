@@ -18,11 +18,11 @@ import android.widget.ProgressBar;
 import com.example.ijkplayerdemo.permission.FloatWindowManager;
 import com.example.ijkplayerdemo.widget.media.IjkVideoView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, MyMeadiaController.PlayStatusListner {
     private final static int REQUEST_CODE = 1000;
-    private final static String PATH_VIDEO = "http://mov.bn.netease.com/open-movie/nos/flv/2017/01/03/SC8U8K7BC_hd.flv";
+    //private final static String PATH_VIDEO = "http://mov.bn.netease.com/open-movie/nos/flv/2017/01/03/SC8U8K7BC_hd.flv";
+    private final static String PATH_VIDEO = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
     private IjkVideoView mIjkVideoView;
-    private ImageView mPlay, mPasue;
     private ProgressBar mProgress;
     private FloatView floatView;
 
@@ -35,9 +35,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void init() {
 
-        mPasue = findViewById(R.id.iv_pause);
-        mPlay = findViewById(R.id.iv_play);
-        mPlay.setOnClickListener(this);
         mProgress = findViewById(R.id.pb_num);
 
         mIjkVideoView = findViewById(R.id.videoview);
@@ -46,13 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MyMeadiaController myMeadiaController = new MyMeadiaController(this);
         mIjkVideoView.setMediaController(myMeadiaController);
         myMeadiaController.attchVideoView(mIjkVideoView);
-
-
-     /*   IjkVideoView ijkVideoView = new IjkVideoView(this);
-        floatView = new FloatView(this, 0 , 0);
-        floatView.removeAllViews();
-        floatView.addView(ijkVideoView);*/
-
+        myMeadiaController.setmPlayStatusListner(this);
     }
 
     @Override
@@ -69,13 +60,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.videoview:
                 break;
             case R.id.iv_play:
-                mPlay.setVisibility(View.GONE);
-                mIjkVideoView.start();
-                break;
-            case R.id.iv_pause:
 
                 break;
         }
+    }
+
+
+    @Override
+    public void onPlaying() {
+        mIjkVideoView.start();
+    }
+
+    @Override
+    public void onPlayPause() {
+        mIjkVideoView.pause();
+    }
+
+    @Override
+    public void onPlayResume() {
+        mIjkVideoView.resume();
     }
 
 
